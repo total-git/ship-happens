@@ -1,0 +1,4 @@
+1 Battleship: 5
+2 Cruiser: 4
+3 Destroyer: 3
+4 Submarine: 2
