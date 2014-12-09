@@ -8,7 +8,7 @@ object Orientation extends Enumeration {
 }
 import Orientation._
 
-case class Ship(val length: Int, val orientation: Orientation)
+case class Ship(val length: Int)
 
 object Result extends Enumeration {
   type Result = Value

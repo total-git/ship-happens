@@ -35,7 +35,7 @@ case class Board(val width: Int, val height: Int) {
       return Result.Hit
   }
 
-  def setShip(ship: Ship, coords: Coordinates): Boolean = false
+  def setShip(ship: Ship, coords: Coordinates, orient: Orientation): Boolean = false
 
   def getFullBoard(): Field = field
   def getVisibleBoard() : Field = field
