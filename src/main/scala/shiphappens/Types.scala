@@ -20,12 +20,12 @@ case class Move(val target: (Int,Int), val result: Result)
 
 case class Coordinates(val x: Int, val y: Int) {
   def this(s: String) {
-    this(s.head - 'A', s.charAt(1) - '1')
+    this(s.head - 'A', s.tail.toInt - 1)
   }
 
   implicit def coords2Tuple(coords: Coordinates): (Int,Int) =
     (coords.x,coords.y)
 
   override def toString(): String =
-    (x + 'A').toChar.toString +  (y + '1').toChar.toString
+    (x + 'A').toChar.toString +  (y+1).toString
 }
