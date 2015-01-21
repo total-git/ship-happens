@@ -11,6 +11,7 @@ case class Board(val width: Int, val height: Int) {
   // (probed by enemy, ship reference if any)
   case class FieldEntry(var probed: Boolean, var ship: Option[ShipEntry])
   type Field = Array[Array[FieldEntry]]
+  type VisibleField = Array[Array[Option[Result]]]
 
   private var field: Field = Array.ofDim[FieldEntry](width,height)
   private var ships: List[ShipEntry] = List()
@@ -18,14 +19,13 @@ case class Board(val width: Int, val height: Int) {
   def probeSquare(coords: Coordinates): Result.Result = {
     val fe = field(coords.x)(coords.y)
 
-    if (fe.ship.isEmpty)
-      fe.probed = true
-      return Result.Miss
-
+    // first prevent double hits on single field
     if (fe.probed)
-      return Result.Miss
-
+      return Result.AlreadyProbed
     fe.probed = true
+
+    if (fe.ship.isEmpty)
+      return Result.Miss
 
     val ship = fe.ship.get
 
@@ -52,8 +52,8 @@ case class Board(val width: Int, val height: Int) {
     return true
   }
 
-  def getFullBoard(): Field = field
-  def getVisibleBoard() : Field = field
+  def getFullBoard(): Field = new Field(field)
+  //def getVisibleBoard() : VisibleField = field
 
   private def isValidShipPlace(coords: Coordinates): Boolean = {
     (coords :: coords.getNeighbours(width,height))
