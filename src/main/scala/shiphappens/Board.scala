@@ -11,7 +11,7 @@ case class Board(val width: Int, val height: Int) {
   // (probed by enemy, ship reference if any)
   case class FieldEntry(var probed: Boolean, var ship: Option[ShipEntry])
   type Field = Array[Array[FieldEntry]]
-  type VisibleField = Array[Array[Option[Result]]]
+  type VisibleField = Array[Array[Option[Result.Result]]]
 
   private var field: Field = Array.ofDim[FieldEntry](width,height)
   private var ships: List[ShipEntry] = List()
@@ -52,8 +52,23 @@ case class Board(val width: Int, val height: Int) {
     return true
   }
 
-  def getFullBoard(): Field = new Field(field)
-  //def getVisibleBoard() : VisibleField = field
+ // def getFullBoard(): Field = new Field(field)
+  def getVisibleBoard() : VisibleField = field.map(_.map(toVisibleField))
+
+  private def toVisibleField(f: FieldEntry): Option[Result.Result] = {
+    if (!f.probed)
+      None
+    else {
+      if (f.ship.isEmpty) {
+        Some(Result.Miss)
+      } else {
+        if (f.ship.get.lives == 0)
+          Some(Result.Sunk)
+        else
+          Some(Result.Hit)
+      }
+    }
+  }
 
   private def isValidShipPlace(coords: Coordinates): Boolean = {
     (coords :: coords.getNeighbours(width,height))
