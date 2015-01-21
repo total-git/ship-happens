@@ -49,7 +49,7 @@ case class Board(val width: Int, val height: Int) {
     val se = new ShipEntry(ship, ship.length)
     ships ::= se
     for (f <- fields) field(f.x)(f.y).ship = Some(se)
-    true
+    return true
   }
 
   def getFullBoard(): Field = field
