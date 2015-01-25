@@ -44,6 +44,18 @@ case class Coordinates(val x: Int, val y: Int) {
   implicit def coords2Tuple(coords: Coordinates): (Int,Int) =
     (coords.x,coords.y)
 
+  def +(c: Coordinates) =
+    new Coordinates(x + c.x, y + c.y)
+
+  def +(c: (Int,Int)) =
+    new Coordinates(x + c._1, y + c._2)
+
+  def ==(c: Coordinates) =
+    (x == c.x) && (y == c.y)
+
+  def ==(c: (Int,Int)) =
+    (x == c._1) && (y == c._2)
+
   override def toString(): String =
     (x + 'A').toChar.toString +  (y+1).toString
 }
