@@ -41,8 +41,6 @@ case class Coordinates(val x: Int, val y: Int) {
     return list
   }
 
-  implicit def coords2Tuple(coords: Coordinates): (Int,Int) =
-    (coords.x,coords.y)
 
   def +(c: Coordinates) =
     new Coordinates(x + c.x, y + c.y)
@@ -58,4 +56,12 @@ case class Coordinates(val x: Int, val y: Int) {
 
   override def toString(): String =
     (x + 'A').toChar.toString +  (y+1).toString
+}
+
+object Coordinates {
+  implicit def coords2Tuple(coords: Coordinates): (Int,Int) =
+    (coords.x,coords.y)
+
+  implicit def tuple2Coords(t: (Int,Int)): Coordinates =
+    Coordinates(t._1, t._2)
 }
