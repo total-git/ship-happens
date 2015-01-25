@@ -10,9 +10,10 @@ case class ShipEntry(val ship: Ship, val lives: Int,
 case class Board(field: Array[Array[Boolean]],
                  ships: List[ShipEntry]) {
   // constructs an empty field
-  def this(width: Int, height: Int) {
+  def this(width: Int, height: Int) =
     this(Array.fill(width,height)(false), List())
-  }
+  // constructor with default size
+  def this() = this(10,10)
 
   type PlayerField = Array[Array[(Boolean, Result)]]
   type EnemyField =  Array[Array[Option[Result]]]
