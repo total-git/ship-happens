@@ -2,70 +2,89 @@ package shiphappens.Board
 
 import shiphappens.Types._
 import shiphappens.Types.Orientation._
+import shiphappens.Types.Result._
 
-import scala.Array
+import scala.collections.immutable.Vector
 
-case class Board(val width: Int, val height: Int) {
-  // (ship, lives of ship)
-  case class ShipEntry(ship: Ship, var lives: Int)
-  // (probed by enemy, ship reference if any)
-  case class FieldEntry(var probed: Boolean, var ship: Option[ShipEntry])
-  type Field = Array[Array[FieldEntry]]
-  type VisibleField = Array[Array[Option[Result.Result]]]
+// (ship, lives of ship)
+case class ShipEntry(ship: Ship, val lives: Int)
+// (probed by enemy, ship reference if any)
+case class FieldEntry(val probed: Boolean, val ship: Option[ShipEntry])
 
-  private var field: Field = Array.ofDim[FieldEntry](width,height)
-  private var ships: List[ShipEntry] = List()
-
-  def probeSquare(coords: Coordinates): Result.Result = {
-    val fe = field(coords.x)(coords.y)
-
-    // first prevent double hits on single field
-    if (fe.probed)
-      return Result.AlreadyProbed
-    fe.probed = true
-
-    if (fe.ship.isEmpty)
-      return Result.Miss
-
-    val ship = fe.ship.get
-
-    ship.lives = ship.lives - 1
-    if (ship.lives == 0)
-      return Result.Sunk
-    else
-      return Result.Hit
+case class Board(field: Array[Array[FieldEntry]],
+                 ships: List[ShipEntry]) {
+  // constructs an empty field
+  def this(width: Int, height: Int) {
+    this(Array.ofDim[FieldEntry](width,height), List())
   }
 
-  def setShip(ship: Ship, coords: Coordinates, orient: Orientation): Boolean = {
+  type VisibleField = Array[Array[Option[Result]]]
+
+  def width = field.size
+  def height = field(0).size
+
+  def full = field
+  def visible : VisibleField = field.map(_.map(toVisibleField))
+
+  def at(c: Coordinates) : FieldEntry = {
+    field(c.x)(c.y)
+  }
+
+  def probeSquare(c: Coordinates): (Board,Result) = {
+    // first prevent double hits on single field
+    if (at(c).probed)
+      return (this,AlreadyProbed)
+    // replace the modified line
+    var nfield = field.clone
+    nfield(c.x) = field(c.x).clone
+    nfield(c.x)(c.y) = new FieldEntry(true, at(c).ship)
+
+    if (at(c).ship.isEmpty)
+      return (Board(nfield,ships), Miss)
+
+    val nships = ships.map( s => 
+      if (s == at(c).ship.get)
+        new ShipEntry(s.ship, s.lives - 1)
+      else
+        s
+    )
+    val ship = at(c).ship.get
+
+    if (ship.lives == 1)
+      return (Board(nfield, nships), Sunk)
+    else
+      return (Board(nfield, nships), Hit)
+  }
+
+  def setShip(ship: Ship, coords: Coordinates, orient: Orientation): Option[Board] = {
     val fields = getShipFields(ship, coords, orient)
     // first check placement (no fields out of border)
     if (fields.foldLeft(true)(_ && isValidCoord(_)) == false)
-      return false
+      return None
     // check neighbour fields
     if (fields.foldLeft(true)(_ && isValidShipPlace(_)) == false)
-      return false
+      return None
 
     // store ship in ship list
     val se = new ShipEntry(ship, ship.length)
-    ships ::= se
-    for (f <- fields) field(f.x)(f.y).ship = Some(se)
-    return true
+    val nships = se :: ships
+    var nfield = field.clone
+    for (f <- fields) nfield(f.x)(f.y).ship = Some(se)
+    return Some(Board(nfield, nships))
   }
 
-  def getFullBoard() = field
-  def getVisibleBoard() : VisibleField = field.map(_.map(toVisibleField))
 
-  private def toVisibleField(f: FieldEntry): Option[Result.Result] = {
+  private def toVisibleField(f: FieldEntry): Option[Result] = {
     if (!f.probed)
       None
     else {
       if (f.ship.isEmpty) {
-        Some(Result.Miss)
+        Some(Miss)
       } else {
         if (f.ship.get.lives == 0)
-          Some(Result.Sunk)
+          Some(Sunk)
         else
-          Some(Result.Hit)
+          Some(Hit)
       }
     }
   }
