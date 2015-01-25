@@ -52,7 +52,7 @@ case class Board(val width: Int, val height: Int) {
     return true
   }
 
- // def getFullBoard(): Field = new Field(field)
+  def getFullBoard() = field
   def getVisibleBoard() : VisibleField = field.map(_.map(toVisibleField))
 
   private def toVisibleField(f: FieldEntry): Option[Result.Result] = {
