@@ -16,6 +16,11 @@ object Result extends Enumeration {
 }
 import Result._
 
+object Player extends Enumeration {
+  type Player = Value
+  val Self, Enemy = Value
+}
+
 abstract class Move
 case class Shot(val target: Coordinates, val result: Result) extends Move
 case class Place(val target: Coordinates, val ship: Ship, val orient: Orientation) extends Move
