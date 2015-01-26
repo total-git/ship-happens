@@ -7,6 +7,11 @@ import shiphappens.Types.Result._
 case class ShipEntry(val ship: Ship, val lives: Int,
                      val coords: Coordinates, val orient: Orientation)
 
+object Board {
+  type PlayerField = Array[Array[(Boolean, Result)]]
+  type EnemyField =  Array[Array[Option[Result]]]
+}
+
 case class Board(field: Array[Array[Boolean]],
                  ships: List[ShipEntry]) {
   // constructs an empty field
@@ -15,9 +20,6 @@ case class Board(field: Array[Array[Boolean]],
   // constructor with default size
   def this() = this(10,10)
 
-  type PlayerField = Array[Array[(Boolean, Result)]]
-  type EnemyField =  Array[Array[Option[Result]]]
-
   def width = field.size
   def height = field(0).size
 
@@ -25,7 +27,7 @@ case class Board(field: Array[Array[Boolean]],
     field zip (shipField map {_ map toResult}) map { case (a,b) => a zip b }
   }
 
-  def visible : EnemyField = {
+  def visible : Board.EnemyField = {
     full map (_ map {
       case (true, r) => Some(r);
       case (false, x) => None;
