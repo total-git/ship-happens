@@ -64,6 +64,8 @@ case class Coordinates(val x: Int, val y: Int) {
 }
 
 object Coordinates {
+  implicit def string2Tuple(s: String): Coordinates = new Coordinates(s)
+
   implicit def coords2Tuple(coords: Coordinates): (Int,Int) =
     (coords.x,coords.y)
 
