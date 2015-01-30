@@ -12,7 +12,7 @@ case class Ship(val name: String, val length: Int)
 
 object Result extends Enumeration {
   type Result = Value
-  val Miss, Hit, Sunk, AlreadyProbed = Value
+  val Miss, Hit, Sunk, AlreadyProbed, Invalid = Value
 }
 import Result._
 

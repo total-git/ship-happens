@@ -40,6 +40,9 @@ case class Board(field: Array[Array[Boolean]],
   }
 
   def probeSquare(c: Coordinates): (Board,Result) = {
+    // check if coordinates are valid, otherwise move is wasted
+    if (!isValidCoord(c))
+      return (this,Invalid)
     // first prevent double hits on single field
     if (isProbed(c))
       return (this,AlreadyProbed)
