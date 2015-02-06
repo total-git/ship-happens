@@ -23,7 +23,7 @@ case class Board(field: Array[Array[Boolean]],
   def width = field.size
   def height = field(0).size
 
-  def full = {
+  def full = { // : Board.PlayerField
     field zip (shipField map {_ map toResult}) map { case (a,b) => a zip b }
   }
 
