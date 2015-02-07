@@ -1,0 +1,15 @@
+@import _root_.shiphappens.Board._
+@(own: Board.PlayerField)
+
+@import Utils._
+
+<table>
+  @for(line <- own) {
+    <tr>
+      @for(row <- line) {
+        <td>@Utils.printField(row)</td>
+      }
+    </tr>
+  }
+</table>
+
