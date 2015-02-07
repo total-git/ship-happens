@@ -27,8 +27,8 @@ object Phase extends Enumeration {
 }
 
 abstract class Move
-case class Shot(val target: Coordinates, val result: Result) extends Move
-case class Place(val target: Coordinates, val ship: Ship, val orient: Orientation) extends Move
+case class Shot(val player: Player, val target: Coordinates, val result: Result) extends Move
+case class Placed(val target: Coordinates, val ship: Ship, val orient: Orientation) extends Move
 
 case class Coordinates(val x: Int, val y: Int) {
   def this(s: String) {

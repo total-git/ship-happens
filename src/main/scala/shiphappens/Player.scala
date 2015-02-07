@@ -16,9 +16,7 @@ trait Player {
   def bomb(field: Board.EnemyField): Coordinates
   def placeShip(ship: Ship, field: Board.PlayerField): (Coordinates,Orientation)
   // update function (for GUI, etc.)
-  // TODO Should contain some information by whom the last move was.
-  def update(ownField: Board.PlayerField, enemyField: Board.EnemyField,
-             player: Player, phase: Phase) : Move
+  def update(move: Move, ownField: Board.PlayerField, enemyField: Board.EnemyField)
 
 }
 
@@ -49,8 +47,8 @@ case class HumanPlayer(val id: Int)  extends Player {
     return (coord, orientation)
   }
 
-  def update(ownField: Board.PlayerField, enemyField: Board.EnemyField,
-             player: Player, phase: Phase) = {
+  def update(move: Move, ownField: Board.PlayerField,
+             enemyField: Board.EnemyField) = {
     ???
   }
 
