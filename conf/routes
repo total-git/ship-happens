@@ -1,0 +1,5 @@
+# Routes
+# Defines all routes from address to application part
+# Higher priority routes come first
+
+GET     /                   controllers.Application.index
