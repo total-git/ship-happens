@@ -10,6 +10,7 @@ import shiphappens.Types.Coordinates._
 import shiphappens.Types.Orientation._
 import shiphappens.Types.Player._
 import shiphappens.Types.Result._
+import shiphappens.Types.Phase._
 
 trait Player {
   def bomb(field: Board.EnemyField): Coordinates
@@ -17,13 +18,14 @@ trait Player {
   // update function (for GUI, etc.)
   // TODO Should contain some information by whom the last move was.
   def update(ownField: Board.PlayerField, enemyField: Board.EnemyField,
-             player: Player, move: Move)
+             player: Player, phase: Phase) : Move
 
 }
 
 case class HumanPlayer(val id: Int)  extends Player {
   def bomb(field: Board.EnemyField): Coordinates = {
-    var buffer = ""
+    var buffer : String = ""
+    // only checks if the coordinates can be parsed, not if they are inside the boundaries or already bombed
     while(!buffer.matches("\\A[A-Z]\\d+\\s*\\z")) {
       buffer = readLine("Shoot which square? (A to %s, 1 to %d, e.g. A4): ".format((field.size+'A').toChar.toString, field(0).size))
     }
@@ -31,7 +33,7 @@ case class HumanPlayer(val id: Int)  extends Player {
     return coord
   }
   def placeShip(ship: Ship, field: Board.PlayerField): (Coordinates,Orientation) = {
-    var buffer = ""
+    var buffer : String = ""
     while(!buffer.matches("\\A[A-Z]\\d+\\s*\\z")) {
       buffer = readLine("Place %s (%d long) where? Give coordinates of the top left square: ".format(ship.name,ship.length))
     }
@@ -48,7 +50,7 @@ case class HumanPlayer(val id: Int)  extends Player {
   }
 
   def update(ownField: Board.PlayerField, enemyField: Board.EnemyField,
-             player: Player, move: Move) = {
+             player: Player, phase: Phase) = {
     ???
   }
 
@@ -75,6 +77,7 @@ case class HumanPlayer(val id: Int)  extends Player {
     println("   +"+"-"*(f.size*2+1)+"+\n")
   }
 
+  // TODO maybe reuse some code
   def printOwn(f: Board.PlayerField) {
     var rowCount : Int = 0
     val validChars = ('A' to 'Z')
