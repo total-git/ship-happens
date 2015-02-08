@@ -1,0 +1,19 @@
+table {
+    text-align: center;
+    table-layout: fixed;
+}
+
+div .fields {
+    width: 100%;
+}
+
+div .ownField {
+    float: left;
+}
+
+
+div .enemyField {
+    float: left;
+}
+
+

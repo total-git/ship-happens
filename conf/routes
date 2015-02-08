@@ -1,0 +1,11 @@
+# Routes
+# Defines all routes from address to application part
+# Higher priority routes come first
+
+GET     /                   controllers.Application.index
+
+GET     /player/:id         controllers.Player.index(id: Int)
+
+GET     /action/move/:id    controllers.Player.move(id: Int)
+
+GET     /assets/*file       controllers.Assets.at(path="/public", file)
