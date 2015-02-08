@@ -1,0 +1,21 @@
+@import _root_.shiphappens.Board._
+@(own: Board.PlayerField)
+
+@import Utils._
+
+<table>
+  <tr>
+    <td></td>
+    @for(i <- List.range(0,own.length)) {
+      <td>@{(i + 'A').toChar.toString}</td>
+    }
+  </tr>
+  @for(i <- List.range(0,own.length)) {
+    <tr>
+      <td>@(i+1)</td>
+      @for(row <- own(i)) {
+        <td>@Utils.printOwnField(row)</td>
+      }
+    </tr>
+  }
+</table>

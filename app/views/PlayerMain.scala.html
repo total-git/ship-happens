@@ -1,0 +1,21 @@
+@import _root_.shiphappens.Board._
+@(id: Int, own: Board.PlayerField, enemy: Board.EnemyField)
+
+<link rel="stylesheet"
+      href="@routes.Assets.at("stylesheets/main.css")">
+
+<body>
+  <p>
+    Hello player @id to ship-happens!
+  </p>
+
+  <div class="fields">
+    <div class="ownField">
+      @DrawOwnBoard(own)
+    </div>
+
+    <div class="enemyField">
+      @DrawEnemyBoard(enemy)
+    </div>
+  </div>
+</body>

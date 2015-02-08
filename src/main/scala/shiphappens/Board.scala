@@ -96,7 +96,7 @@ case class Board(field: Array[Array[Boolean]],
       // first add the coordinates to every entry
       .map{ case (a,x) => a map { case (e,y) => (e,(x,y)) } } // A[A[(Opt[Ship],(Int,Int))]]
       // if the coordinates are in the ship list, add the ship, else None
-      .map(_.map({ case (e,c) => sfs.find{ _._1 == c } map (_._2) }))
+      .map(_.map({ case (e,c) => sfs.find{ _._1 == c } map (_._2) })).transpose
   }
 
   private def toResult(ship: Option[ShipEntry]) : Result = ship match {
@@ -111,7 +111,7 @@ case class Board(field: Array[Array[Boolean]],
   }
 
   private def getShipFields(s: ShipEntry) = {
-    if (s.orient == Horizontal)
+    if (s.orient == Vertical)
       for (i <- 0 to s.ship.length-1) yield (s.coords + (i,0))
     else // vertical
       for (i <- 0 to s.ship.length-1) yield (s.coords + (0,i))

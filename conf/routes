@@ -7,3 +7,5 @@ GET     /                   controllers.Application.index
 GET     /player/:id         controllers.Player.index(id: Int)
 
 GET     /action/move/:id    controllers.Player.move(id: Int)
+
+GET     /assets/*file       controllers.Assets.at(path="/public", file)
