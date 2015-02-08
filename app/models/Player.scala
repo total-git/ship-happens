@@ -10,18 +10,35 @@ class PlayPlayer(val id: Int) extends Player {
   private var _own: Board.PlayerField = Array.fill(10,10)((false,Miss))
   private var _enemy: Board.EnemyField = Array.fill(10,10)(None)
   private var _moves: List[Move] = List()
+  private var _ourTurn: Boolean = false
+  private var _ship: Option[Ship] = None
 
   def own = _own
   def enemy = _enemy
   def moves = _moves
 
-  override def requestShot(field: Board.EnemyField): Coordinates = ???
-  override def requestPlacing(field: Board.PlayerField, ship: Ship)
-    : (Coordinates,Orientation) = ???
-  override def update(ownField: Board.PlayerField, enemyField: Board.EnemyField,
-             move: Move) = {
+  override def requestShot(field: Board.EnemyField) = {
+    _enemy = field
+    _ourTurn = true
+  }
+
+  override def requestPlacing(field: Board.PlayerField, ship: Ship) = {
+    _own = field
+    _ship = Some(ship)
+  }
+
+  override def update(ownField: Board.PlayerField,
+                      enemyField: Board.EnemyField,
+                      move: Move) = {
     _own = ownField
     _enemy = enemyField
     _moves ::= move
+  }
+
+  def placeShip(coords: Coordinates, orient: Orientation): Boolean = {
+    if (_ship.isEmpty)
+      return false
+
+    PlayGame.game.placeShip(id, _ship.get, coords, orient)
   }
 }

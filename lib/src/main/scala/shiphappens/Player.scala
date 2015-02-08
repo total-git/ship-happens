@@ -1,17 +1,7 @@
 package shiphappens.Player
 
-import scala.util.matching.Regex
-import scala.io.StdIn._
-
-// import bloat
 import shiphappens.Board._
-import shiphappens.Board.Board._
 import shiphappens.Types._
-import shiphappens.Types.Coordinates._
-import shiphappens.Types.Orientation._
-import shiphappens.Types.Result._
-import shiphappens.Types.Shot._
-import shiphappens.Types.Placed._
 
 trait Player {
   // set of signals which must be supported by all Players
@@ -22,6 +12,7 @@ trait Player {
 
 }
 
+/*
 case class HumanPlayer(val id: Int)  extends Player {
   override def toString(): String =
     "Player " + id.toString
@@ -61,3 +52,5 @@ case class HumanPlayer(val id: Int)  extends Player {
   }
 
 }
+
+*/
