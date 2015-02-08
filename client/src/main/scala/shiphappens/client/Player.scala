@@ -16,10 +16,7 @@ class Player(val id: Int) {
 
   def getBoards(): String = {
     val response = client.get(new URL("http://localhost:9000/api/get/" + id.toString))
-      response match {
-        case _:Unit =>
-        case r => state = r.body.asString
-      }
+    return response.body.asString
   }
 
   def shoot() : Coordinates = {
