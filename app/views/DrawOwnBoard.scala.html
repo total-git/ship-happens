@@ -4,9 +4,10 @@
 @import Utils._
 
 <table>
+  <tr><th colspan=@(own(0).length+1)>Your Board</th></tr>
   <tr>
     <td></td>
-    @for(i <- List.range(0,own.length)) {
+    @for(i <- List.range(0,own(0).length)) {
       <td>@{(i + 'A').toChar.toString}</td>
     }
   </tr>
