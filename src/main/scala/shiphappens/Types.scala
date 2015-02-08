@@ -2,13 +2,19 @@ package shiphappens.Types
 
 import scala.Enumeration
 
+import shiphappens.Player._
+
 object Orientation extends Enumeration {
   type Orientation = Value
   val Horizontal, Vertical = Value
 }
 import Orientation._
 
-case class Ship(val name: String, val length: Int)
+case class Ship(val name: String, val length: Int) {
+  override def toString(): String =
+    name + " (" + length + ")"
+}
+
 
 object Result extends Enumeration {
   type Result = Value
@@ -21,14 +27,9 @@ object Player extends Enumeration {
   val Self, Enemy = Value
 }
 
-object Phase extends Enumeration {
-  type Phase = Value
-  val Placing, Bombing = Value
-}
-
 abstract class Move
 case class Shot(val player: Player, val target: Coordinates, val result: Result) extends Move
-case class Placed(val target: Coordinates, val ship: Ship, val orient: Orientation) extends Move
+case class Placed(val ship: Ship, val orient: Orientation, val target: Coordinates) extends Move
 
 case class Coordinates(val x: Int, val y: Int) {
   def this(s: String) {
