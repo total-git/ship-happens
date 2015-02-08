@@ -8,7 +8,7 @@ GET     /player/:id         controllers.Player.index(id: Int)
 
 GET     /action/move/:id    controllers.Player.move(id: Int)
 
-GET     /api/getOwn/:id     controllers.Api.getOwn(id: Int)
+GET     /api/get/:id        controllers.Api.get(id: Int)
 #POST    /api/move/:id       controllers.Api.move(id: Int)
 
 GET     /assets/*file       controllers.Assets.at(path="/public", file)

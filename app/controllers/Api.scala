@@ -8,20 +8,17 @@ import play.api.libs.json.Json._
 
 import models.Game
 import shiphappens.Types._
-import shiphappens.Json._
-
-import net.liftweb.json._
-import net.liftweb.json.Serialization.write
 
 object Api extends Controller {
 
-  def getOwn(id: Int) = Action {
+  // return the own game
+  def get(id: Int) = Action {
     if (id < 1 || id > 2)
-      BadRequest(toJson(Map("status" -> "error",
-                            "message" -> "Player ID invalid, only two players can play ship-happens")))
+      BadRequest("Player ID invalid, only two players can play ship-happens")
     else {
-      implicit val formats = Serialization.formats(NoTypeHints)
-      Ok(write(Game.player(id).own))
+      // some code to print the field
+      val field = ""
+      Ok(write(field))
     }
   }
 
