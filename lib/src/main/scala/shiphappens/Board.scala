@@ -65,8 +65,14 @@ case class Board(field: Array[Array[Boolean]],
         s
     )
 
-    if (ship.get.lives == 1) // old ship with lives before reduction
-      return (Board(nfield, nships), Sunk)
+    if (ship.get.lives == 1) {// old ship with lives before reduction
+      for(tmpShip <- nships) {
+        // still at least one ship alive
+        if(tmpShip.lives != 0) return (Board(nfield, nships), Sunk)
+      }
+      // all ships destroyed
+      return (Board(nfield, nships), Won)
+    }
     else
       return (Board(nfield, nships), Hit)
   }

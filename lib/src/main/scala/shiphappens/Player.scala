@@ -23,6 +23,8 @@ trait Player {
 }
 
 case class HumanPlayer(val id: Int)  extends Player {
+  override def toString(): String =
+    "Player " + id.toString
   def requestShot(field: Board.EnemyField): Coordinates = {
     var buffer : String = ""
     // only checks if the coordinates can be parsed, not if they are inside the boundaries or already bombed
@@ -50,10 +52,9 @@ case class HumanPlayer(val id: Int)  extends Player {
   }
 
   def update(ownField: Board.PlayerField, enemyField: Board.EnemyField, move: Move) = {
-    // TODO: notification for wrong coordinates when placing ship
     move match {
-      case Shot(player, target, result) => println("%s shot at %s. Result = %s".format(player, target, result))
-      case Placed(ship, orient, target) => println("Placed %s at %s with %s orientation".format(ship, target, orient))
+      case Shot(player, target, result) => println(Shot(player, target, result))
+      case Placed(ship, orient, target) => println(Placed(ship, orient, target))
     }
     printOwn(ownField)
     printEnemy(enemyField)
@@ -62,7 +63,7 @@ case class HumanPlayer(val id: Int)  extends Player {
   def printEnemy(f: Board.EnemyField) {
     var rowCount : Int = 0
     val validChars = ('A' to 'Z')
-    print("Enemy: \n    ")
+    print("Enemy:\n    ")
     // wraparound after z to a
     for(letterIndex <- 0 to f.size-1) print(" "+validChars(letterIndex%26))
     println("\n   +"+"-"*(f.size*2+1)+"+")
@@ -86,7 +87,7 @@ case class HumanPlayer(val id: Int)  extends Player {
   def printOwn(f: Board.PlayerField) {
     var rowCount : Int = 0
     val validChars = ('A' to 'Z')
-    print("You: \n    ")
+    print("You:\n    ")
     // wraparound after z to a
     for(letterIndex <- 0 to f.size-1) print(" "+validChars(letterIndex%26))
     println("\n   +"+"-"*(f.size*2+1)+"+")
