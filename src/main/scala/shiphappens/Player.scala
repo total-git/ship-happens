@@ -1,6 +1,7 @@
 package shiphappens.Player
 
 import scala.util.matching.Regex
+import scala.io.StdIn._
 
 // import bloat
 import shiphappens.Board._
@@ -10,18 +11,19 @@ import shiphappens.Types.Coordinates._
 import shiphappens.Types.Orientation._
 import shiphappens.Types.Player._
 import shiphappens.Types.Result._
-import shiphappens.Types.Phase._
+import shiphappens.Types.Shot._
+import shiphappens.Types.Placed._
 
 trait Player {
-  def bomb(field: Board.EnemyField): Coordinates
-  def placeShip(ship: Ship, field: Board.PlayerField): (Coordinates,Orientation)
+  def requestShot(field: Board.EnemyField): Coordinates
+  def requestPlacing(field: Board.PlayerField, ship: Ship): (Coordinates,Orientation)
   // update function (for GUI, etc.)
-  def update(move: Move, ownField: Board.PlayerField, enemyField: Board.EnemyField)
+  def update(ownField: Board.PlayerField, enemyField: Board.EnemyField, move: Move)
 
 }
 
 case class HumanPlayer(val id: Int)  extends Player {
-  def bomb(field: Board.EnemyField): Coordinates = {
+  def requestShot(field: Board.EnemyField): Coordinates = {
     var buffer : String = ""
     // only checks if the coordinates can be parsed, not if they are inside the boundaries or already bombed
     while(!buffer.matches("\\A[A-Z]\\d+\\s*\\z")) {
@@ -30,7 +32,7 @@ case class HumanPlayer(val id: Int)  extends Player {
     val coord : Coordinates = new Coordinates(buffer)
     return coord
   }
-  def placeShip(ship: Ship, field: Board.PlayerField): (Coordinates,Orientation) = {
+  def requestPlacing(ship: Ship, field: Board.PlayerField): (Coordinates,Orientation) = {
     var buffer : String = ""
     while(!buffer.matches("\\A[A-Z]\\d+\\s*\\z")) {
       buffer = readLine("Place %s (%d long) where? Give coordinates of the top left square: ".format(ship.name,ship.length))
@@ -42,14 +44,19 @@ case class HumanPlayer(val id: Int)  extends Player {
     val orientation = buffer match {
       case "h" => Horizontal
       case "v" => Vertical
-      case _   => Vertical
+      //case _   => Vertical
     }
     return (coord, orientation)
   }
 
-  def update(move: Move, ownField: Board.PlayerField,
-             enemyField: Board.EnemyField) = {
-    ???
+  def update(ownField: Board.PlayerField, enemyField: Board.EnemyField, move: Move) = {
+    // TODO: notification for wrong coordinates when placing ship
+    move match {
+      case Shot(player, target, result) => print("%s shot at %s. Result = %s".format(player, target, result))
+      case Placed(target, ship, orient) => print("Placed %s at %s with %s orientation".format(ship, target, orient))
+    }
+    printOwn(ownField)
+    printEnemy(enemyField)
   }
 
   def printEnemy(f: Board.EnemyField) {
