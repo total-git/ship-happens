@@ -12,7 +12,7 @@ object Player extends Controller {
     if (id < 1 || id > 2)
       BadRequest("Player ID invalid, only two players can play ship-happens\n")
     else {
-      Ok(views.html.PlayerMain(id, Game.player(id).own, Game.player(id).enemy))
+      Ok(views.html.PlayerMain(id, Game.player(id)))
     }
   }
 

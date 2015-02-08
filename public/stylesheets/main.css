@@ -3,17 +3,22 @@ table {
     table-layout: fixed;
 }
 
-div .fields {
+div.fields {
     width: 100%;
 }
 
-div .ownField {
+div.ownField {
     float: left;
+    width: 50%;
 }
 
 
-div .enemyField {
+div.enemyField {
     float: left;
+    width: 50%;
 }
 
-
+div.history {
+    clear: left;
+    width: 100%;
+}

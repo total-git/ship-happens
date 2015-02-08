@@ -1,8 +1,10 @@
-@import _root_.shiphappens.Board._
-@(id: Int, own: Board.PlayerField, enemy: Board.EnemyField)
+@(id: Int, p: PlayPlayer)
 
-<link rel="stylesheet"
-      href="@routes.Assets.at("stylesheets/main.css")">
+<head>
+  <title>ship happens</title>
+  <link rel="stylesheet"
+        href="@routes.Assets.at("stylesheets/main.css")">
+</head>
 
 <body>
   <p>
@@ -11,11 +13,21 @@
 
   <div class="fields">
     <div class="ownField">
-      @DrawOwnBoard(own)
+      @DrawOwnBoard(p.own)
     </div>
 
     <div class="enemyField">
-      @DrawEnemyBoard(enemy)
+      @DrawEnemyBoard(p.enemy)
     </div>
+  </div>
+
+  <div class="history">
+    <p>
+    <h1>History</h1>
+
+      @for(move <- p.moves.take(10)) {
+        @move <br/>
+      }
+    </p>
   </div>
 </body>
