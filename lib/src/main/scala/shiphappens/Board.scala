@@ -12,16 +12,17 @@ object Board {
   type EnemyField =  Array[Array[Option[Result]]]
 }
 
+// field is an 2D array with the inner array beeing horizontal
 case class Board(field: Array[Array[Boolean]],
                  ships: List[ShipEntry]) {
   // constructs an empty field
   def this(width: Int, height: Int) =
-    this(Array.fill(width,height)(false), List())
+    this(Array.fill(height,width)(false), List())
   // constructor with default size
   def this() = this(10,10)
 
-  def width = field.size
-  def height = field(0).size
+  def height = field.size
+  def width = field(0).size
 
   def full = { // : Board.PlayerField
     field zip (shipField map {_ map toResult}) map { case (a,b) => a zip b }
@@ -34,9 +35,9 @@ case class Board(field: Array[Array[Boolean]],
     } )
   }
 
-  def isProbed(c: Coordinates) = field(c.x)(c.y)
+  def isProbed(c: Coordinates) = field(c.y)(c.x)
   def shipAt(c: Coordinates) : Option[ShipEntry] = {
-    shipField(c.x)(c.y)
+    shipField(c.y)(c.x)
   }
 
   def probeSquare(c: Coordinates): (Board,Result) = {
@@ -49,8 +50,8 @@ case class Board(field: Array[Array[Boolean]],
 
     // replace the modified line
     var nfield = field.clone
-    nfield(c.x) = field(c.x).clone
-    nfield(c.x)(c.y) = true
+    nfield(c.y) = field(c.y).clone
+    nfield(c.y)(c.x) = true
 
     val ship = shipAt(c)
 
@@ -94,7 +95,7 @@ case class Board(field: Array[Array[Boolean]],
     val sf : Array[Array[Option[ShipEntry]]] = Array.fill(width,height)(None)
     sf.map(_.zipWithIndex).zipWithIndex
       // first add the coordinates to every entry
-      .map{ case (a,x) => a map { case (e,y) => (e,(x,y)) } } // A[A[(Opt[Ship],(Int,Int))]]
+      .map{ case (a,y) => a map { case (e,x) => (e,(x,y)) } } // A[A[(Opt[Ship],(Int,Int))]]
       // if the coordinates are in the ship list, add the ship, else None
       .map(_.map({ case (e,c) => sfs.find{ _._1 == c } map (_._2) })).transpose
   }

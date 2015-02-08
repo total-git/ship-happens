@@ -6,7 +6,8 @@ import shiphappens.Player._
 
 object Orientation extends Enumeration {
   type Orientation = Value
-  val Horizontal, Vertical = Value
+  val Horizontal = Value("Horizontal")
+  val Vertical = Value("Vertical")
 }
 import Orientation._
 
