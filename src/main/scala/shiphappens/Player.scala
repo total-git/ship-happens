@@ -32,10 +32,10 @@ case class HumanPlayer(val id: Int)  extends Player {
     val coord : Coordinates = new Coordinates(buffer)
     return coord
   }
-  def requestPlacing(ship: Ship, field: Board.PlayerField): (Coordinates,Orientation) = {
+  def requestPlacing(field: Board.PlayerField, ship: Ship): (Coordinates,Orientation) = {
     var buffer : String = ""
     while(!buffer.matches("\\A[A-Z]\\d+\\s*\\z")) {
-      buffer = readLine("Place %s (%d long) where? Give coordinates of the top left square: ".format(ship.name,ship.length))
+      buffer = readLine("Place %s where? Give coordinates of the top left square: ".format(ship))
     }
     val coord : Coordinates = new Coordinates(buffer)
     while(!(buffer.matches("\\A[hv]\\s*\\z"))) {
@@ -52,8 +52,8 @@ case class HumanPlayer(val id: Int)  extends Player {
   def update(ownField: Board.PlayerField, enemyField: Board.EnemyField, move: Move) = {
     // TODO: notification for wrong coordinates when placing ship
     move match {
-      case Shot(player, target, result) => print("%s shot at %s. Result = %s".format(player, target, result))
-      case Placed(target, ship, orient) => print("Placed %s at %s with %s orientation".format(ship, target, orient))
+      case Shot(player, target, result) => println("%s shot at %s. Result = %s".format(player, target, result))
+      case Placed(ship, orient, target) => println("Placed %s at %s with %s orientation".format(ship, target, orient))
     }
     printOwn(ownField)
     printEnemy(enemyField)
@@ -97,6 +97,7 @@ case class HumanPlayer(val id: Int)  extends Player {
           case (true, Miss) => print(" o")
           case (true, Hit)  => print(" x")
           case (true, Sunk) => print(" X")
+          case (false, Hit) => print(" ■")
           case _            => print("  ")
         }
       }
