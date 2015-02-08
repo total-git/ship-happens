@@ -25,12 +25,19 @@ import Result._
 
 object Player extends Enumeration {
   type Player = Value
-  val Self, Enemy = Value
+  val Self = Value("You")
+  val Enemy = Value("The enemy")
 }
 
 abstract class Move
-case class Shot(val player: Player, val target: Coordinates, val result: Result) extends Move
-case class Placed(val ship: Ship, val orient: Orientation, val target: Coordinates) extends Move
+case class Shot(val player: Player, val target: Coordinates, val result: Result) extends Move {
+  override def toString(): String =
+    player.toString + " shot to place " + target.toString + " with result: " + result.toString
+}
+case class Placed(val ship: Ship, val orient: Orientation, val target: Coordinates) extends Move {
+  override def toString(): String =
+    "You placed a " + ship.toString + " at " + target.toString + " " + orient.toString
+}
 
 case class Coordinates(val x: Int, val y: Int) {
   def this(s: String) {
