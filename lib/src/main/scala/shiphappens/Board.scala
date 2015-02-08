@@ -14,7 +14,7 @@ object Board {
   def printFull(f: PlayerField) : String = {
     var rowCount : Int = 0
     val validChars = ('A' to 'Z')
-    var out = "You:\n\n"
+    var out = "You:\n    "
     // wraparound after z to a
     for(letterIndex <- 0 to f.size-1)
       out += " "+validChars(letterIndex%26)
@@ -40,7 +40,7 @@ object Board {
   def printVisible(f: EnemyField) : String = {
     var rowCount : Int = 0
     val validChars = ('A' to 'Z')
-    var out = "Enemy:\n\n"
+    var out = "Enemy:\n    "
     // wraparound after z to a
     for(letterIndex <- 0 to f.size-1)
       out += (" "+validChars(letterIndex%26))
