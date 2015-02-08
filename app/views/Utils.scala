@@ -8,6 +8,7 @@ object Utils {
     case (true, Hit)  => "+"
     case (false, Hit) => "S"
     case (b, Miss)    => "~"
+    case (_, _)       => "!"
   }
 
   def printEnemyField(f: Option[Result]) = f match {
@@ -15,6 +16,7 @@ object Utils {
     case Some(Hit)  => "+"
     case Some(Miss) => "~"
     case None       => " "
+    case Some(_)    => "!"
   }
 
 }
