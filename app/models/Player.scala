@@ -41,4 +41,10 @@ class PlayPlayer(val id: Int) extends Player {
 
     PlayGame.game.placeShip(id, _ship.get, coords, orient)
   }
+
+  def getStatus(): String = _ship match {
+    case Some(s) => "Ship " + s.length
+    case None    => if (_ourTurn) "Player " + id
+                      else "Player " + (id+1)%2
+  }
 }

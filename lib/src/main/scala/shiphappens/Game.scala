@@ -90,10 +90,9 @@ class Game(players: (Player, Player)) {
     return true
   }
 
-  def start = {
-    // first place ships
-    get(1).player.requestPlacing(get(1).board.full, get(1).ships.head)
-    get(2).player.requestPlacing(get(2).board.full, get(2).ships.head)
-  }
+  // as last part of initialization tell both players to place their first
+  // ships
+  get(1).player.requestPlacing(get(1).board.full, get(1).ships.head)
+  get(2).player.requestPlacing(get(2).board.full, get(2).ships.head)
 
 }

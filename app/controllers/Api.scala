@@ -24,7 +24,33 @@ object Api extends Controller {
     }
   }
 
-  def move(id: Int) = Action(parse.tolerantText) { request =>
+  def status(id: Int) = Action {
+    if (id < 1 || id > 2)
+      BadRequest("Player ID invalid, only two players can play ship-happens")
+    else {
+      Ok(PlayGame.player(id).getStatus)
+    }
+  }
+
+  def shoot(id: Int) = Action(parse.tolerantText) { request =>
+    if (id < 1 || id > 2)
+      BadRequest("Player ID invalid, only two players can play ship-happens")
+    Ok("Todo")
+    // parse some data
+
+    /*
+    val coords = (0,0)
+    PlayGame.player(id).shoot(coords) match {
+      case true => Ok("Shot placed succesfully")
+      case false => BadRequest("Failed to shoot")
+
+    }
+    */
+  }
+
+  def place(id: Int) = Action(parse.tolerantText) { request =>
+    if (id < 1 || id > 2)
+      BadRequest("Player ID invalid, only two players can play ship-happens")
     // parse some data
     val coords = (0,0)
     val orient = Orientation.Horizontal
