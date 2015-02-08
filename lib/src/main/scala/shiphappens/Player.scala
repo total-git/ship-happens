@@ -9,14 +9,14 @@ import shiphappens.Board.Board._
 import shiphappens.Types._
 import shiphappens.Types.Coordinates._
 import shiphappens.Types.Orientation._
-import shiphappens.Types.Player._
 import shiphappens.Types.Result._
 import shiphappens.Types.Shot._
 import shiphappens.Types.Placed._
 
 trait Player {
-  def requestShot(field: Board.EnemyField): Coordinates
-  def requestPlacing(field: Board.PlayerField, ship: Ship): (Coordinates,Orientation)
+  // set of signals which must be supported by all Players
+  def requestShot(field: Board.EnemyField)
+  def requestPlacing(field: Board.PlayerField, ship: Ship)
   // update function (for GUI, etc.)
   def update(ownField: Board.PlayerField, enemyField: Board.EnemyField, move: Move)
 
