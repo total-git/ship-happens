@@ -21,7 +21,13 @@ class Game(players: (Player, Player)) {
   private var _players: (PlayerStruct,PlayerStruct)
     = (PlayerStruct(players._1, new Board(), Game.startShips),
        PlayerStruct(players._2, new Board(), Game.startShips))
-  private var next: Int = 1
+  // initialize with 0 so nobody can shoot until placing is done
+  private var next: Int = 0
+
+  // as last part of initialization tell both players to place their first
+  // ships
+  get(1).player.requestPlacing(get(1).board.full, get(1).ships.head)
+  get(2).player.requestPlacing(get(2).board.full, get(2).ships.head)
 
   private def get(id: Int) = id match {
     case 1 => _players._1
@@ -36,6 +42,9 @@ class Game(players: (Player, Player)) {
   // places a ship at the given position
   def placeShip(id: Int, ship: Ship, coords: Coordinates,
                 orient: Orientation): Boolean = {
+    if (id < 1 || id > 2)
+      return false
+
     var p = get(id)
     if (p.ships.isEmpty)
       return false
@@ -54,6 +63,7 @@ class Game(players: (Player, Player)) {
           } else if (enemy(id).ships.isEmpty) {
             // all ships are placed now notify player 1 to make the first
             // move
+            next = 1
             get(1).player.requestShot(get(2).board.visible)
           }
           return true
@@ -67,7 +77,7 @@ class Game(players: (Player, Player)) {
 
   def makeMove(id: Int, coords: Coordinates): Boolean = {
     // make sure it's the players turn
-    if (id != next)
+    if (id != next || id < 1 || id > 2)
       return false
 
     val p = get(id)
@@ -89,10 +99,5 @@ class Game(players: (Player, Player)) {
     }
     return true
   }
-
-  // as last part of initialization tell both players to place their first
-  // ships
-  get(1).player.requestPlacing(get(1).board.full, get(1).ships.head)
-  get(2).player.requestPlacing(get(2).board.full, get(2).ships.head)
 
 }
