@@ -6,8 +6,9 @@ import play.api.mvc.BodyParsers.parse
 import play.api.libs.json._
 import play.api.libs.json.Json._
 
-import models.Game
+import models.PlayGame
 import shiphappens.Types._
+import shiphappens.Board._
 
 object Api extends Controller {
 
@@ -17,8 +18,9 @@ object Api extends Controller {
       BadRequest("Player ID invalid, only two players can play ship-happens")
     else {
       // some code to print the field
-      val field = ""
-      Ok(write(field))
+      Ok(Board.printFull(PlayGame.player(id).own)
+         + Board.printVisible(PlayGame.player(id).enemy)
+        )
     }
   }
 

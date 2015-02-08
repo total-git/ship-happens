@@ -54,7 +54,6 @@ object Game {
       case (_, Won) => return true
     }
   }
-    
 
   // Just for testing
   def main(args: Array[String]) {

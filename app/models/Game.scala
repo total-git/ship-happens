@@ -2,7 +2,7 @@ package models
 
 import shiphappens.Game
 
-object Game {
+object PlayGame {
   private var _players : (PlayPlayer, PlayPlayer) = (new PlayPlayer(1),
                                                      new PlayPlayer(2))
 

@@ -4,7 +4,7 @@ import play.api._
 import play.api.mvc._
 import play.api.mvc.BodyParsers.parse
 
-import models.Game
+import models.PlayGame
 
 object Player extends Controller {
 
@@ -12,7 +12,7 @@ object Player extends Controller {
     if (id < 1 || id > 2)
       BadRequest("Player ID invalid, only two players can play ship-happens\n")
     else {
-      Ok(views.html.PlayerMain(id, Game.player(id)))
+      Ok(views.html.PlayerMain(id, PlayGame.player(id)))
     }
   }
 

@@ -10,6 +10,57 @@ case class ShipEntry(val ship: Ship, val lives: Int,
 object Board {
   type PlayerField = Array[Array[(Boolean, Result)]]
   type EnemyField =  Array[Array[Option[Result]]]
+
+  def printFull(f: PlayerField) : String = {
+    var rowCount : Int = 0
+    val validChars = ('A' to 'Z')
+    var out = "You:\n\n"
+    // wraparound after z to a
+    for(letterIndex <- 0 to f.size-1)
+      out += " "+validChars(letterIndex%26)
+    out += "\n   +"+"-"*(f.size*2+1)+"+\n"
+    for(row <- f) {
+      out += "%2d |".format(rowCount+1)
+      for(col <- row) {
+        col match {
+          case (true, Miss) => out += " o"
+          case (true, Hit)  => out += " x"
+          case (true, Sunk) => out += " X"
+          case (false, Hit) => out += " ■"
+          case _            => out += "  "
+        }
+      }
+      rowCount+=1
+      out += " |\n"
+    }
+    out += "   +"+"-"*(f.size*2+1)+"+\n"
+    out
+  }
+
+  def printVisible(f: EnemyField) : String = {
+    var rowCount : Int = 0
+    val validChars = ('A' to 'Z')
+    var out = "Enemy:\n\n"
+    // wraparound after z to a
+    for(letterIndex <- 0 to f.size-1)
+      out += (" "+validChars(letterIndex%26))
+    out += "\n   +"+"-"*(f.size*2+1)+"+\n"
+    for(row <- f) {
+      out += "%2d |".format(rowCount+1)
+      for(col <- row) {
+        col match {
+          case Some(Miss) => out += " o"
+          case Some(Hit)  => out += " x"
+          case Some(Sunk) => out += " X"
+          case _          => out += "  "
+        }
+      }
+      rowCount+=1
+      out += " |\n"
+    }
+    out += "   +"+"-"*(f.size*2+1)+"+\n"
+    out
+  }
 }
 
 // field is an 2D array with the inner array beeing horizontal
@@ -34,6 +85,7 @@ case class Board(field: Array[Array[Boolean]],
       case (false, x) => None;
     } )
   }
+
 
   def isProbed(c: Coordinates) = field(c.y)(c.x)
   def shipAt(c: Coordinates) : Option[ShipEntry] = {
@@ -129,4 +181,5 @@ case class Board(field: Array[Array[Boolean]],
     if (c.x >= width || c.y >= height) return false
     return true
   }
+
 }
