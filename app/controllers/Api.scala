@@ -37,23 +37,22 @@ object Api extends Controller {
   def shoot(id: Int) = Action(parse.tolerantText) { request =>
     if (id < 1 || id > 2)
       BadRequest("Player ID invalid, only two players can play ship-happens")
-    Ok("Todo")
-    // parse some data
+    else if (!request.body.matches("""\A\w+\d+\Z""")) {
+      BadRequest("Input is invalid. Not a valid coordinate to shoot at")
+    } else {
+      val coords = request.body
 
-    /*
-    val coords = (0,0)
-    PlayGame.player(id).shoot(coords) match {
-      case true => Ok("Shot placed succesfully")
-      case false => BadRequest("Failed to shoot")
-
+      PlayGame.player(id).shoot(coords) match {
+        case true => Ok("Shot placed succesfully")
+        case false => BadRequest("Failed to shoot")
+      }
     }
-    */
   }
 
   def place(id: Int) = Action(parse.tolerantText) { request =>
     if (id < 1 || id > 2)
       BadRequest("Player ID invalid, only two players can play ship-happens")
-    else if (!request.body.matches("""\w+\d+ (Horizontal|Vertical)"""))
+    else if (!request.body.matches("""\A\w+\d+ (Horizontal|Vertical)\Z"""))
       BadRequest("Input is invalid. Not a valid placement specification")
     else {
       val s = request.body.split(" ")
