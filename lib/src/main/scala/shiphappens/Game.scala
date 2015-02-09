@@ -1,13 +1,9 @@
-package shiphappens.Game
+package shiphappens
 
-import shiphappens.Board._
-
-import shiphappens.Player._
-import shiphappens.Types._
-import shiphappens.Types.Coordinates._
-import shiphappens.Types.PlayerId.{Self,Enemy}
-import shiphappens.Types.Orientation._
-import shiphappens.Types.Result._
+import shiphappens._
+import shiphappens.Result._
+import shiphappens.PlayerId.{Self,Enemy}
+import shiphappens.Orientation._
 
 case class PlayerStruct(var player: Player,
                         var board: Board,

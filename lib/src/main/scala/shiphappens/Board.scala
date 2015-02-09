@@ -1,8 +1,7 @@
-package shiphappens.Board
+package shiphappens
 
-import shiphappens.Types._
-import shiphappens.Types.Orientation._
-import shiphappens.Types.Result._
+import shiphappens.Orientation._
+import shiphappens.Result._
 
 case class ShipEntry(val ship: Ship, val lives: Int,
                      val coords: Coordinates, val orient: Orientation)

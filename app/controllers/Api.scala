@@ -8,8 +8,7 @@ import play.api.libs.json._
 import play.api.libs.json.Json._
 
 import models.PlayGame
-import shiphappens.Types._
-import shiphappens.Board._
+import shiphappens._
 
 object Api extends Controller {
 

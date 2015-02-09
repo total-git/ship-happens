@@ -1,6 +1,6 @@
 package Utils
 
-import shiphappens.Types.Result._
+import shiphappens.Result._
 
 object Utils {
   def printOwnField(f: (Boolean, Result)) = f match {

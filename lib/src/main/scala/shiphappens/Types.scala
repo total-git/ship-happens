@@ -1,4 +1,4 @@
-package shiphappens.Types
+package shiphappens
 
 import scala.Enumeration
 

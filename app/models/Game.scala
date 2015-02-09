@@ -1,6 +1,6 @@
 package models
 
-import shiphappens.Game._
+import shiphappens.Game
 
 object PlayGame {
   private var _players : (PlayPlayer, PlayPlayer) = (new PlayPlayer(1),
