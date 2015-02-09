@@ -92,7 +92,7 @@ class Game(players: (Player, Player)) {
     // if the game is not over notify the other player that it's his turn
     if (r != Won) {
       e.player.requestShot(p.board.visible)
-      next = (next+1)%2
+      next = if (next == 1) 2 else 1
     } else {
       // we set this to 0, meaning nobody is allowed to make moves
       next = 0
