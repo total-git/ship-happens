@@ -2,15 +2,12 @@
 # Defines all routes from address to application part
 # Higher priority routes come first
 
-GET     /                   controllers.Application.index
-
+# routes for webfrontend. only to watch
 GET     /player/:id         controllers.Player.index(id: Int)
+GET     /assets/*file       controllers.Assets.at(path="/public", file)
 
-GET     /action/move/:id    controllers.Player.move(id: Int)
-
+# routes for client connection
 GET     /api/get/:id        controllers.Api.get(id: Int)
 GET     /api/status/:id     controllers.Api.status(id: Int)
 POST    /api/shoot/:id      controllers.Api.shoot(id: Int)
 POST    /api/place/:id      controllers.Api.place(id: Int)
-
-GET     /assets/*file       controllers.Assets.at(path="/public", file)
