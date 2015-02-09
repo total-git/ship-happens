@@ -39,7 +39,15 @@ class PlayPlayer(val id: Int) extends Player {
     if (_ship.isEmpty)
       return false
 
-    PlayGame.game.placeShip(id, _ship.get, coords, orient)
+    // we can't reset the ship to None after placeShip, because a callback of
+    // placeShip already sets _ship to the next ship. But if it fails we need
+    // to restore the original ship, because we still have to place it
+    val oldShip = _ship.get
+    _ship = None
+    PlayGame.game.placeShip(id, _ship.get, coords, orient) match {
+      case true => return true
+      case false => _ship = Some(oldShip); return false
+    }
   }
 
   def shoot(coords: Coordinates): Boolean = {
