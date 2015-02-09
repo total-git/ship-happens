@@ -1,11 +1,6 @@
 package shiphappens.Client
 
-import shiphappens.Client._
 import scala.util.matching.Regex
-import shiphappens.Types._
-import shiphappens.Types.Ship._
-import shiphappens.Types.Orientation._
-import shiphappens.Types.Coordinates._
 
 object client {
 
@@ -14,7 +9,7 @@ object client {
     val p = new Player(id)
 
     while(p.checkStatus) {
-      Thread sleep(2000)
+      Thread sleep(500)
     }
   }
 }

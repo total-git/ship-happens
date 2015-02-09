@@ -1,22 +1,36 @@
-package shiphappens.Game
+package shiphappens
 
-import shiphappens.Board._
-
-import shiphappens.Player._
-import shiphappens.Types._
-import shiphappens.Types.Coordinates._
-import shiphappens.Types.PlayerId.{Self,Enemy}
-import shiphappens.Types.Orientation._
-import shiphappens.Types.Result._
+import shiphappens._
+import shiphappens.Result._
+import shiphappens.PlayerId.{Self,Enemy}
+import shiphappens.Orientation._
 
 case class PlayerStruct(var player: Player,
                         var board: Board,
                         var ships: List[Ship])
 
 object Game {
-  val startShips : List[Ship] = List(Ship("Battleship", 5), Ship("Cruiser", 4), Ship("Cruiser", 4), Ship("Destroyer", 3), Ship("Destroyer", 3), Ship("Destroyer", 3), Ship("Submarine", 2), Ship("Submarine", 2), Ship("Submarine", 2), Ship("Submarine", 2))
+  // List of ships available for every player
+  val startShips : List[Ship]
+    = List(Ship("Battleship", 5),
+           Ship("Cruiser", 4),
+           Ship("Cruiser", 4),
+           Ship("Destroyer", 3),
+           Ship("Destroyer", 3),
+           Ship("Destroyer", 3),
+           Ship("Submarine", 2),
+           Ship("Submarine", 2),
+           Ship("Submarine", 2),
+           Ship("Submarine", 2))
 }
 
+/**
+ * Game wraps the controller of a ship-happens game. For every player it
+ * owns a reference to that player, a Board and a List of ships to place.
+ *
+ * Players can play by using the functions placeShip and makeMove. They get
+ * notified about updates via the functions defined in the Player trait.
+ */
 class Game(players: (Player, Player)) {
   private var _players: (PlayerStruct,PlayerStruct)
     = (PlayerStruct(players._1, new Board(), Game.startShips),

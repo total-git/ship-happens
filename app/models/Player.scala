@@ -1,11 +1,9 @@
 package models
 
-import shiphappens.Player._
-import shiphappens.Types._
-import shiphappens.Types.Orientation._
-import shiphappens.Types.PlayerId._
-import shiphappens.Types.Result._
-import shiphappens.Board._
+import shiphappens._
+import shiphappens.Orientation._
+import shiphappens.PlayerId._
+import shiphappens.Result._
 
 class PlayPlayer(val id: Int) extends Player {
   private var _own: Board.PlayerField = Array.fill(10,10)((false,Miss))

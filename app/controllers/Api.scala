@@ -7,10 +7,16 @@ import play.api.mvc.Results._
 import play.api.libs.json._
 import play.api.libs.json.Json._
 
-import models.PlayGame
-import shiphappens.Types._
-import shiphappens.Board._
+import scala.util.matching.Regex
 
+import models.PlayGame
+import shiphappens._
+
+/**
+ * Controller with access functions for the client
+ *
+ * Accesses the singleton PlayGame and the information stored in it
+ */
 object Api extends Controller {
 
   // return the own game
@@ -48,9 +54,13 @@ object Api extends Controller {
     } else {
       val coords = request.body("coord").head
 
-      PlayGame.player(id).shoot(coords) match {
-        case true => Ok("Shot placed succesfully")
-        case false => BadRequest("Failed to shoot")
+      if (!coords.matches("""\A\w+\d+\Z""")) {
+        BadRequest("Invalid coordinates")
+      } else {
+        PlayGame.player(id).shoot(coords) match {
+          case true => Ok("Shot placed succesfully")
+          case false => BadRequest("Failed to shoot")
+        }
       }
     }
   }
@@ -61,7 +71,9 @@ object Api extends Controller {
     else {
       val c = request.body("coord")
       val o = request.body("orient")
-      if (c.length != 1 && o.length != 1)
+      if (c.length != 1 || o.length != 1
+          || !c.head.matches("""\A\w+\d+\Z""")
+          || !o.head.matches("(Horizontal|Vertical)"))
         BadRequest("Invalid parameters")
       else {
         val coords = c.head

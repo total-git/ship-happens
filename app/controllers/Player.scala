@@ -6,6 +6,10 @@ import play.api.mvc.BodyParsers.parse
 
 import models.PlayGame
 
+/**
+ * simple web front end, which is read-only, but allows watching the game
+ * from a browser (with manual reloading). Address is player/<playerid>
+ */
 object Player extends Controller {
 
   def index(id: Int) = Action {
@@ -14,10 +18,6 @@ object Player extends Controller {
     else {
       Ok(views.html.PlayerMain(id, PlayGame.player(id)))
     }
-  }
-
-  def move(id: Int) = Action(parse.tolerantText) { request =>
-    Ok("TODO")
   }
 
 }

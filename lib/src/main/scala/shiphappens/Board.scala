@@ -1,8 +1,7 @@
-package shiphappens.Board
+package shiphappens
 
-import shiphappens.Types._
-import shiphappens.Types.Orientation._
-import shiphappens.Types.Result._
+import shiphappens.Orientation._
+import shiphappens.Result._
 
 case class ShipEntry(val ship: Ship, val lives: Int,
                      val coords: Coordinates, val orient: Orientation)
@@ -63,7 +62,19 @@ object Board {
   }
 }
 
-// field is an 2D array with the inner array beeing horizontal
+/**
+ * Class that handles all inforation regarding the placement of ships and
+ * shots. Doesn't know anything about Playern, just has full and visible as
+ * representation functions for the different players.
+ * Game is responsible to check that only the correct player is allowed to
+ * modify the game state.
+ *
+ * The whole class is immutable, changing functions return a new game with as
+ * much as possible shared between the new and the old game.
+ *
+ * field is an 2D array with the inner array beeing horizontal
+ * ships is a list containing all the ships placed on the Board
+ */
 case class Board(field: Array[Array[Boolean]],
                  ships: List[ShipEntry]) {
   // constructs an empty field
@@ -75,10 +86,13 @@ case class Board(field: Array[Array[Boolean]],
   def height = field.size
   def width = field(0).size
 
+  // returns a representation of the full board to be given to the player
+  // owning the board
   def full = { // : Board.PlayerField
     field zip (shipField map {_ map toResult}) map { case (a,b) => a zip b }
   }
 
+  // returns a representation of the board to be given to the enemy player
   def visible : Board.EnemyField = {
     full map (_ map {
       case (true, r) => Some(r);
@@ -86,12 +100,15 @@ case class Board(field: Array[Array[Boolean]],
     } )
   }
 
-
+  // helper functions so the don't have to create bugs by using the wrong
+  // index in the array
   def isProbed(c: Coordinates) = field(c.y)(c.x)
   def shipAt(c: Coordinates) : Option[ShipEntry] = {
     shipField(c.y)(c.x)
   }
 
+  // probes the square, i.e. tries to shoot at the given coordinate
+  // returns a tuple of the updates board and the result code for that shot
   def probeSquare(c: Coordinates): (Board,Result) = {
     // check if coordinates are valid, otherwise move is wasted
     if (!isValidCoord(c))
@@ -129,6 +146,9 @@ case class Board(field: Array[Array[Boolean]],
       return (Board(nfield, nships), Hit)
   }
 
+  // places a ship at the given position with the given orientation.
+  // if the placement is valid Some() updated board is returned, otherwise
+  // None.
   def setShip(ship: Ship, coords: Coordinates, orient: Orientation): Option[Board] = {
     val entry = new ShipEntry(ship, ship.length, coords, orient)
 
@@ -145,6 +165,10 @@ case class Board(field: Array[Array[Boolean]],
     return Some(Board(field, nships))
   }
 
+  /** internal functions begin here **/
+
+  // this functions builds a 2D array similar to the field array which
+  // has on every occupied field a reference to the ship at that place
   private def shipField : Array[Array[Option[ShipEntry]]] = {
     // build a list of tuples of coordinates and the corresponding ships
     val sfs : List[(Coordinates, ShipEntry)]

@@ -5,11 +5,10 @@ import uk.co.bigbeeconsultants.http.response.Response
 import uk.co.bigbeeconsultants.http.request.RequestBody
 import java.net.URL
 
-import shiphappens.Board._
-import shiphappens.Types._
-import shiphappens.Types.Result._
-import shiphappens.Types.Coordinates._
-import shiphappens.Types.Orientation._
+import shiphappens._
+import shiphappens.Result._
+import shiphappens.Coordinates._
+import shiphappens.Orientation._
 
 class Player(val id: Int) {
   private val client = new HttpClient
