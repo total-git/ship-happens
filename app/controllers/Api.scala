@@ -7,9 +7,16 @@ import play.api.mvc.Results._
 import play.api.libs.json._
 import play.api.libs.json.Json._
 
+import scala.util.matching.Regex
+
 import models.PlayGame
 import shiphappens._
 
+/**
+ * Controller with access functions for the client
+ *
+ * Accesses the singleton PlayGame and the information stored in it
+ */
 object Api extends Controller {
 
   // return the own game
