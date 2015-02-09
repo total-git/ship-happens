@@ -50,9 +50,10 @@ class PlayPlayer(val id: Int) extends Player {
   }
 
   def shoot(coords: Coordinates): Boolean = {
+    _ourTurn = false
     PlayGame.game.makeMove(id, coords) match {
-      case true  => _ourTurn = false; return true
-      case false => return false
+      case true  => return true
+      case false => _ourTurn = true; return false
     }
   }
 
