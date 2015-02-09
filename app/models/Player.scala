@@ -44,7 +44,7 @@ class PlayPlayer(val id: Int) extends Player {
     // to restore the original ship, because we still have to place it
     val oldShip = _ship.get
     _ship = None
-    PlayGame.game.placeShip(id, _ship.get, coords, orient) match {
+    PlayGame.game.placeShip(id, oldShip, coords, orient) match {
       case true => return true
       case false => _ship = Some(oldShip); return false
     }
