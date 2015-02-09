@@ -101,7 +101,7 @@ class BoardTest extends FlatSpec with Matchers {
     b1.shipAt("B1").get.lives shouldBe 2
   }
 
-  it should "be sunk after three hits" in {
+  it should "be sund and won after three hits" in {
     val (b1,r1) = b.probeSquare("B1")
     val (b2,r2) = b1.probeSquare("B2")
     val (b3,r3) = b2.probeSquare("B3")
@@ -110,7 +110,7 @@ class BoardTest extends FlatSpec with Matchers {
     b2.shipAt("B1").get.lives shouldBe 1
     r2 shouldBe Result.Hit
     b3.shipAt("B1").get.lives shouldBe 0
-    r3 shouldBe Result.Sunk
+    r3 shouldBe Result.Won
   }
 
   it should "not change something to hit the same field twice" in {
