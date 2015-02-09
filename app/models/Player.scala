@@ -39,10 +39,7 @@ class PlayPlayer(val id: Int) extends Player {
     if (_ship.isEmpty)
       return false
 
-    PlayGame.game.placeShip(id, _ship.get, coords, orient) match {
-      case true  => _ship = None; return true;
-      case false => return false
-    }
+    PlayGame.game.placeShip(id, _ship.get, coords, orient)
   }
 
   def shoot(coords: Coordinates): Boolean = {
