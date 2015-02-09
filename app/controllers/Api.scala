@@ -46,7 +46,7 @@ object Api extends Controller {
     }
   }
 
-  def shoot(id: Int) = Action(parse.tolerantFormUrlEncoded) { request =>
+  def shoot(id: Int) = Action(parse.urlFormEncoded) { request =>
     if (id < 1 || id > 2)
       BadRequest("Player ID invalid, only two players can play ship-happens")
     else if (request.body("coord").length != 1) {
@@ -65,7 +65,7 @@ object Api extends Controller {
     }
   }
 
-  def place(id: Int) = Action(parse.tolerantFormUrlEncoded) { request =>
+  def place(id: Int) = Action(parse.urlFormEncoded) { request =>
     if (id < 1 || id > 2)
       BadRequest("Player ID invalid, only two players can play ship-happens")
     else {
