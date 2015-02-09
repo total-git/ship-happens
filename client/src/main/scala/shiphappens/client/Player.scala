@@ -30,8 +30,11 @@ class Player(val id: Int) {
     val boards : String = getBoards()
     val status : String = getStatus()
     if(status.matches("\\APlayer\\s*\\d.*")) {
-      val coord = RequestBody(Map("coord" -> shoot().toString))
-      client.post(new URL("http://localhost:9000/api/shoot/" + id.toString), Some(coord))
+      // check if it's our turn
+      if (status.matches("\\APlayer\\s*" + id)) {
+        val coord = RequestBody(Map("coord" -> shoot().toString))
+        client.post(new URL("http://localhost:9000/api/shoot/" + id.toString), Some(coord))
+      }
     }
     if(status.matches("\\A\\w*\\s*\\(\\d\\).*")) {
       var name = ""
