@@ -1,5 +1,4 @@
-import shiphappens.Board._
-import shiphappens.Types._
+import shiphappens._
 import org.scalatest._
 
 class BoardTest extends FlatSpec with Matchers {
