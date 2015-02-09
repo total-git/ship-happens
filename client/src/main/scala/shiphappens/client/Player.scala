@@ -2,6 +2,7 @@ package shiphappens.Client
 
 import uk.co.bigbeeconsultants.http.HttpClient
 import uk.co.bigbeeconsultants.http.response.Response
+import uk.co.bigbeeconsultants.http.request.RequestBody
 import java.net.URL
 
 import shiphappens.Board._
@@ -17,6 +18,38 @@ class Player(val id: Int) {
   def getBoards(): String = {
     val response = client.get(new URL("http://localhost:9000/api/get/" + id.toString))
     return response.body.asString
+  }
+
+  def getStatus(): String = {
+    val response = client.get(new URL("http://localhost:9000/api/status/" + id.toString))
+    return response.body.asString
+
+  }
+
+  def checkStatus() {
+    val boards : String = getBoards()
+    val status : String = getStatus()
+    if(status.matches("\\APlayer\\s*\\d.*")) {
+      val coord = RequestBody(Map("coord" -> shoot().toString))
+      client.post(new URL("http://localhost:9000/api/shoot/" + id.toString), Some(coord))
+    }
+    if(status.matches("\\A\\w*\\s*\\(\\d\\).*")) {
+      var name = ""
+      var num  = 0
+      "\\w*".r findFirstIn status match {
+        case Some(s) => name = s
+        case _       =>
+      }
+      "\\d".r findFirstIn status match {
+        case Some(s) => num = s.toInt
+        case _       =>
+      }
+      val ship : Ship = new Ship(name, num)
+      val (coord,orient) : (Coordinates,Orientation) = place(ship)
+      val placing = RequestBody(Map("coord" -> coord.toString, "orient" -> orient.toString))
+      client.post(new URL("http://localhost:9000/api/place/" + id.toString), Some(placing))
+    }
+    println(boards)
   }
 
   def shoot() : Coordinates = {
