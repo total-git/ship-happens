@@ -13,7 +13,7 @@ import shiphappens.Types.Orientation._
 
 class Player(val id: Int) {
   private val client = new HttpClient
-  var state : String = ""
+  var lastBoards : String = ""
 
   def getBoards(): String = {
     val response = client.get(new URL("http://localhost:9000/api/get/" + id.toString))
@@ -26,8 +26,16 @@ class Player(val id: Int) {
 
   }
 
+  // main event loop for the client, gets called by the main function
+  // in a infinite loop
   def checkStatus() {
+    // check if board has changed, yes => print it
     val boards : String = getBoards()
+    if (boards != lastBoards) {
+      println(boards)
+      lastBoards = boards
+    }
+
     val status : String = getStatus()
     if(status.matches("\\APlayer\\s*\\d.*")) {
       // check if it's our turn
@@ -52,8 +60,6 @@ class Player(val id: Int) {
       val placing = RequestBody(Map("coord" -> coord.toString, "orient" -> orient.toString))
       client.post(new URL("http://localhost:9000/api/place/" + id.toString), Some(placing))
     }
-    val boards2 : String = getBoards()
-    if(boards2 != boards) println(boards)
   }
 
   def shoot() : Coordinates = {
