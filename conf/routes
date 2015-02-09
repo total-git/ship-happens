@@ -9,5 +9,6 @@ GET     /assets/*file       controllers.Assets.at(path="/public", file)
 # routes for client connection
 GET     /api/get/:id        controllers.Api.get(id: Int)
 GET     /api/status/:id     controllers.Api.status(id: Int)
+GET     /api/latest/:id     controllers.Api.latest(id: Int)
 POST    /api/shoot/:id      controllers.Api.shoot(id: Int)
 POST    /api/place/:id      controllers.Api.place(id: Int)

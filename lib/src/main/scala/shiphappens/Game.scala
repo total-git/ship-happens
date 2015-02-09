@@ -61,8 +61,7 @@ class Game(players: (Player, Player)) {
           if (!p.ships.isEmpty) {
             p.player.requestPlacing(p.board.full, p.ships.head)
           } else if (enemy(id).ships.isEmpty) {
-            // all ships are placed now notify player 1 to make the first
-            // move
+            // all ships are placed now notify player 1 to make the first move
             next = 1
             get(1).player.requestShot(get(2).board.visible)
           }

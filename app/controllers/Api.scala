@@ -32,6 +32,14 @@ object Api extends Controller {
     }
   }
 
+  def latest(id: Int) = Action {
+    if (id < 1 || id > 2)
+      BadRequest("Player ID invalid, only two players can play ship-happens")
+    else {
+      Ok(PlayGame.player(id).moves.take(10).mkString("\n"))
+    }
+  }
+
   def shoot(id: Int) = Action(parse.tolerantFormUrlEncoded) { request =>
     if (id < 1 || id > 2)
       BadRequest("Player ID invalid, only two players can play ship-happens")
