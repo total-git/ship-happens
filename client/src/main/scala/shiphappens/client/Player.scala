@@ -3,6 +3,7 @@ package shiphappens.Client
 import uk.co.bigbeeconsultants.http.HttpClient
 import uk.co.bigbeeconsultants.http.response.Response
 import uk.co.bigbeeconsultants.http.request.RequestBody
+import uk.co.bigbeeconsultants.http.header.MediaType
 import java.net.URL
 
 import shiphappens._
@@ -46,7 +47,8 @@ class Player(val id: Int) {
     if(status.matches("\\APlayer\\s*\\d.*")) {
       // check if it's our turn
       if (status.matches("\\APlayer\\s*" + id)) {
-        val coord = RequestBody(Map("coord" -> shoot().toString))
+        val coord = RequestBody(Map("coord" -> shoot().toString),
+                                MediaType.APPLICATION_FORM_URLENCODED)
         client.post(new URL("http://localhost:9000/api/shoot/" + id.toString), Some(coord))
       }
       return true
@@ -63,7 +65,8 @@ class Player(val id: Int) {
       }
       val ship : Ship = new Ship(name, num)
       val (coord,orient) : (Coordinates,Orientation) = place(ship)
-      val placing = RequestBody(Map("coord" -> coord.toString, "orient" -> orient.toString))
+      val placing = RequestBody(Map("coord" -> coord.toString, "orient" -> orient.toString),
+                                MediaType.APPLICATION_FORM_URLENCODED)
       client.post(new URL("http://localhost:9000/api/place/" + id.toString), Some(placing))
       return true
     } else {
