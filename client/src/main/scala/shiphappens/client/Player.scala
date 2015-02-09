@@ -49,7 +49,8 @@ class Player(val id: Int) {
       val placing = RequestBody(Map("coord" -> coord.toString, "orient" -> orient.toString))
       client.post(new URL("http://localhost:9000/api/place/" + id.toString), Some(placing))
     }
-    println(boards)
+    val boards2 : String = getBoards()
+    if(boards2 != boards) println(boards)
   }
 
   def shoot() : Coordinates = {

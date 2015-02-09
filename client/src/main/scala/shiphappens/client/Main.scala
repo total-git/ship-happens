@@ -10,7 +10,9 @@ import shiphappens.Types.Coordinates._
 object client {
 
   def main(args: Array[String]) {
-    val p = new Player(1)
+    val id : Int = readLine("Enter player id (1 or 2): ").toInt
+    val p = new Player(id)
+    println(p.getBoards)
     while(true) {
       p.checkStatus
       Thread sleep(2000)
