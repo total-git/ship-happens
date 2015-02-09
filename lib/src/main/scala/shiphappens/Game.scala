@@ -89,12 +89,16 @@ class Game(players: (Player, Player)) {
                     Shot(Enemy, coords, r))
 
     // if the game is not over notify the other player that it's his turn
-    if (r != Won) {
-      e.player.requestShot(p.board.visible)
-      next = if (next == 1) 2 else 1
-    } else {
+    if (r == Won) {
       // we set this to 0, meaning nobody is allowed to make moves
       next = 0
+    } else if (r == Hit || r == Sunk) {
+      // all moves that allow an extra shot
+      p.player.requestShot(e.board.visible)
+    } else {
+      // all moves that pass the right to shoot to the other player
+      e.player.requestShot(p.board.visible)
+      next = if (next == 1) 2 else 1
     }
     return true
   }
