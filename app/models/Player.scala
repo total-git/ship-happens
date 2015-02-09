@@ -3,6 +3,7 @@ package models
 import shiphappens.Player._
 import shiphappens.Types._
 import shiphappens.Types.Orientation._
+import shiphappens.Types.PlayerId._
 import shiphappens.Types.Result._
 import shiphappens.Board._
 
@@ -57,9 +58,28 @@ class PlayPlayer(val id: Int) extends Player {
     }
   }
 
-  def getStatus(): String = _ship match {
-    case Some(s) => s.toString
-    case None    => if (_ourTurn) "Player " + id
-                      else "Player " + (if (id == 1) 2 else 1)
+  def getStatus(): String = {
+    if (!_ship.isEmpty)
+      return _ship.get.toString
+
+    // check if game is over
+    if (!moves.isEmpty) {
+      checkForEndOfGame(moves.head) match {
+        case Some(Self)  => return "Won"
+        case Some(Enemy) => return "Lost"
+        case _           => ()
+      }
+    }
+
+    // otherwise we are currently playing
+    if (_ourTurn)
+      "Player " + id
+    else
+      "Player " + (if (id == 1) 2 else 1)
+  }
+
+  private def checkForEndOfGame(m: Move) = m match {
+    case Shot(p, _, Won) => Some(p)
+    case e               => None
   }
 }

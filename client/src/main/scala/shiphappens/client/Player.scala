@@ -27,8 +27,8 @@ class Player(val id: Int) {
   }
 
   // main event loop for the client, gets called by the main function
-  // in a infinite loop
-  def checkStatus() {
+  // in a infinite loop, returns false to break out of loop and end game
+  def checkStatus(): Boolean = {
     // check if board has changed, yes => print it
     val boards : String = getBoards()
     if (boards != lastBoards) {
@@ -37,14 +37,21 @@ class Player(val id: Int) {
     }
 
     val status : String = getStatus()
+    if (status == "Won") {
+      println("Congratulations, you won the game!")
+      return false
+    } else if (status == "Lost") {
+      println("Sorry, but you lost the game")
+      return false
+    }
     if(status.matches("\\APlayer\\s*\\d.*")) {
       // check if it's our turn
       if (status.matches("\\APlayer\\s*" + id)) {
         val coord = RequestBody(Map("coord" -> shoot().toString))
         client.post(new URL("http://localhost:9000/api/shoot/" + id.toString), Some(coord))
       }
-    }
-    if(status.matches("\\A\\w*\\s*\\(\\d\\).*")) {
+      return true
+    } else if(status.matches("\\A\\w*\\s*\\(\\d\\).*")) {
       var name = ""
       var num  = 0
       "\\w*".r findFirstIn status match {
@@ -59,6 +66,11 @@ class Player(val id: Int) {
       val (coord,orient) : (Coordinates,Orientation) = place(ship)
       val placing = RequestBody(Map("coord" -> coord.toString, "orient" -> orient.toString))
       client.post(new URL("http://localhost:9000/api/place/" + id.toString), Some(placing))
+      return true
+    } else {
+      // shouldn't be reached
+      println("Invalid status " + status + " found.")
+      return false
     }
   }
 
