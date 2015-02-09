@@ -53,7 +53,7 @@ class PlayPlayer(val id: Int) extends Player {
   }
 
   def getStatus(): String = _ship match {
-    case Some(s) => "Ship " + s.length
+    case Some(s) => s.toString
     case None    => if (_ourTurn) "Player " + id
                       else "Player " + (if (id == 1) 2 else 1)
   }
